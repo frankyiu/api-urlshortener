@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var db = require('./db.js');
+var dns = require('dns');
 var app = express();
 
 // Basic Configuration 
@@ -33,13 +34,15 @@ app.get('/', function(req, res){
 //helper function
 
 // your first API endpoint... 
-app.post("/api/shorturl/new", function (req, res,next) {
+app.post("/api/shorturl/new", function (req, res) {
   var oriurl = req.body['url'];
   //checkDNS
-  
+  dns.lookup(oriurl,(err,data)=>{
+    if(err) {return console.log(err)}
+  })
   //find db
   db.findOneByOriURL(oriurl, (err,data)=>{
-    if(err) {return next(err)}
+    if(err) {return console.log(err)}
     console.log('data is '+ data);
     var new_url;
     if(!data){
@@ -48,7 +51,7 @@ app.post("/api/shorturl/new", function (req, res,next) {
       var urlPair = db.urlConverter({oriURL:oriurl,shortURL:url_counter++});
       console.log('UpdatedURL'+url_counter);
       db.createAndSaveURL(urlPair, (err,data)=>{
-        if(err) {return next(err)}
+        if(err) {return console.log(err)}
         res.json({original_url: data['oriURL'],
                 short_url:data['shortURL']});
       })
@@ -59,7 +62,7 @@ app.post("/api/shorturl/new", function (req, res,next) {
   });
 });
 
-app.get("/api/shorturl/:shorturl", function(req, res, next){
+app.get("/api/shorturl/:shorturl", function(req, res){
   
 });
 
