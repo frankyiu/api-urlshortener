@@ -18,5 +18,15 @@ var urlConverter = mongoose.model("urlConverter", urlSchema);
 //function
 
 //get 
+var findOneByOriURL = function(oriURL, done){
+  urlConverter.findOne({oriURL:oriURL}, (err,data)=>{
+    if(err){ return console.log(err)}
+    done(null,data);
+  });
+};
 
+//insert
+var createAndSaveURL = function(done){
+  
+}
 //export
