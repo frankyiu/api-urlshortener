@@ -17,7 +17,13 @@ var urlConverter = mongoose.model("urlConverter", urlSchema);
 
 //function
 
-//get 
+//get
+var findLastCode = function(done){
+  urlConverter.findOne().sort('shortURL',1).run((err,data)=>{
+    done(null,data.shortURL);
+  });
+} 
+
 var findOneByOriURL = function(oriURL, done){
    urlConverter.findOne({oriURL:oriURL}, (err,data)=>{
     if(err){ return console.log(err)}
@@ -44,3 +50,4 @@ exports.urlConverter = urlConverter;
 exports.findOneByOriURL = findOneByOriURL;
 exports.findOneByShortURL = findOneByShortURL;
 exports.createAndSaveURL = createAndSaveURL;
+exports.findLastCode = findLastCode;

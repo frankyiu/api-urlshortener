@@ -11,6 +11,11 @@ var app = express();
 // Basic Configuration 
 var port = process.env.PORT || 3000;
 var url_counter = 0;
+db.findLastCode((err,data)=>{
+    if(err)(console.log(err))
+    url_counter = data;
+    console.log(url_counter);
+})
 /** this project needs a db !! **/ 
 //refer to db.js
 
