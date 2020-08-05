@@ -38,27 +38,27 @@ app.post("/api/shorturl/new", function (req, res) {
   var oriurl = req.body['url'];
   //checkDNS
   dns.lookup(oriurl,(err,data)=>{
-    if(err) {return console.log(err)}
-  })
-  //find db
-  db.findOneByOriURL(oriurl, (err,data)=>{
-    if(err) {return console.log(err)}
-    console.log('data is '+ data);
-    var new_url;
-    if(!data){
-      //save
-      //first draft use counter
-      var urlPair = db.urlConverter({oriURL:oriurl,shortURL:url_counter++});
-      console.log('UpdatedURL'+url_counter);
-      db.createAndSaveURL(urlPair, (err,data)=>{
+    if(err) {console.log(err);
+      return res.json({error: 'invalid URL'});}
+      //find db
+      db.findOneByOriURL(oriurl, (err,data)=>{
         if(err) {return console.log(err)}
-        res.json({original_url: data['oriURL'],
-                short_url:data['shortURL']});
-      })
-    }else{
-      res.json({original_url: data['oriURL'],
-                short_url:data['shortURL']});
-    }
+        var new_url;
+        if(!data){
+          //save
+          //first draft use counter
+          var urlPair = db.urlConverter({oriURL:oriurl,shortURL:url_counter++});
+          console.log('UpdatedURL'+url_counter);
+          db.createAndSaveURL(urlPair, (err,data)=>{
+            if(err) {return console.log(err)}
+            res.json({original_url: data['oriURL'],
+                    short_url:data['shortURL']});
+          })
+        }else{
+          res.json({original_url: data['oriURL'],
+                    short_url:data['shortURL']});
+        }
+      });
   });
 });
 
