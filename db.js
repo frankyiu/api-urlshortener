@@ -1,7 +1,7 @@
 //connect db
 
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -19,14 +19,20 @@ var urlConverter = mongoose.model("urlConverter", urlSchema);
 
 //get 
 var findOneByOriURL = function(oriURL, done){
-  urlConverter.findOne({oriURL:oriURL}, (err,data)=>{
+  return urlConverter.findOne({oriURL:oriURL}, (err,data)=>{
     if(err){ return console.log(err)}
     done(null,data);
   });
 };
 
 //insert
-var createAndSaveURL = function(done){
-  
+var createAndSaveURL = function(urlPair,done){
+  urlPair.save((err,data)=>{
+    if(err) {return console.log(err)}
+    done(null,data);
+  });
 }
 //export
+exports.urlConverter = urlConverter;
+exports.findOneByOriURL = findOneByOriURL;
+exports.createAndSaveURL = createAndSaveURL;

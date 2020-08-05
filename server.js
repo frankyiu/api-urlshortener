@@ -5,7 +5,7 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cors = require('cors');
-
+var db = require('./db.js');
 var app = express();
 
 // Basic Configuration 
@@ -29,6 +29,8 @@ app.get('/', function(req, res){
 // your first API endpoint... 
 app.post("/api/shorturl/new", function (req, res) {
   var ori_url = req.body['url'];
+  //find db
+  db.findOneByOriURL(ori_url);
   res.json({original_url: ori_url,
            short_url:1});
 });
