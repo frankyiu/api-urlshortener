@@ -38,7 +38,8 @@ app.post("/api/shorturl/new", function (req, res,next) {
     if(!data){
       //save
       //first draft use counter
-      db.createAndSaveURL({oriURL:oriurl,shortURL:url_counter++}, (err,data)=>{
+      var urlPair = db.urlConverter({oriURL:oriurl,shortURL:url_counter++});
+      db.createAndSaveURL(urlPair, (err,data)=>{
         if(err) {return next(err)}
         res.json({original_url: data['oriURL'],
                 short_url:data['shortURL']});
@@ -48,6 +49,10 @@ app.post("/api/shorturl/new", function (req, res,next) {
                 short_url:data['shortURL']});
     }
   });
+});
+
+app.get("/api/shorturl/:shorturl", function(req, res, next){
+  
 });
 
 

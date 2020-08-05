@@ -25,6 +25,13 @@ var findOneByOriURL = function(oriURL, done){
   });
 };
 
+var findOneByShortURL = function(shortURL, done){
+   urlConverter.findOne({shortURL:shortURL}, (err,data)=>{
+    if(err){ return console.log(err)}
+    done(null,data);
+  });
+};
+
 //insert
 var createAndSaveURL = function(urlPair,done){
   urlPair.save((err,data)=>{
@@ -35,4 +42,5 @@ var createAndSaveURL = function(urlPair,done){
 //export
 exports.urlConverter = urlConverter;
 exports.findOneByOriURL = findOneByOriURL;
+exports.findOneByShortURL = findOneByShortURL;
 exports.createAndSaveURL = createAndSaveURL;
