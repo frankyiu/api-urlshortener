@@ -19,7 +19,7 @@ var urlConverter = mongoose.model("urlConverter", urlSchema);
 
 //get 
 var findOneByOriURL = function(oriURL, done){
-  return urlConverter.findOne({oriURL:oriURL}, (err,data)=>{
+   urlConverter.findOne({oriURL:oriURL}, (err,data)=>{
     if(err){ return console.log(err)}
     done(null,data);
   });

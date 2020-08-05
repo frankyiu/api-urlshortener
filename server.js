@@ -25,14 +25,29 @@ app.get('/', function(req, res){
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-  
+//helper function
+
 // your first API endpoint... 
-app.post("/api/shorturl/new", function (req, res) {
-  var ori_url = req.body['url'];
+app.post("/api/shorturl/new", function (req, res,next) {
+  var oriurl = req.body['url'];
   //find db
-  db.findOneByOriURL(ori_url);
-  res.json({original_url: ori_url,
-           short_url:1});
+  db.findOneByOriURL(oriurl, (err,data)=>{
+    if(err) {return next(err)}
+    console.log('data is '+ data);
+    var new_url;
+    if(!data){
+      //save
+      //first draft use counter
+      db.createAndSaveURL({oriURL:oriurl,shortURL:url_counter++}, (err,data)=>{
+        if(err) {return next(err)}
+        res.json({original_url: data['oriURL'],
+                short_url:data['shortURL']});
+      })
+    }else{
+      res.json({original_url: data['oriURL'],
+                short_url:data['shortURL']});
+    }
+  });
 });
 
 
