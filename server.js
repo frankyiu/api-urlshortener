@@ -10,9 +10,9 @@ var app = express();
 
 // Basic Configuration 
 var port = process.env.PORT || 3000;
-
+var url_counter = 0;
 /** this project needs a db !! **/ 
-// mongoose.connect(process.env.DB_URI);
+mongoose.connect(process.env.DB_URI);
 
 app.use(cors());
 
@@ -28,7 +28,9 @@ app.get('/', function(req, res){
   
 // your first API endpoint... 
 app.post("/api/shorturl/new", function (req, res) {
-  res.json(req.body);
+  var ori_url = req.body['url'];
+  res.json({original_url: ori_url,
+           short_url:1});
 });
 
 
