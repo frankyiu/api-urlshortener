@@ -19,7 +19,7 @@ var urlConverter = mongoose.model("urlConverter", urlSchema);
 
 //get
 var findLastCode = function(done){
-  urlConverter.findOne().sort('shortURL',1).run((err,data)=>{
+  urlConverter.findOne().sort('-shortURL').exec((err,data)=>{
     done(null,data.shortURL);
   });
 } 

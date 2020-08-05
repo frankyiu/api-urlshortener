@@ -13,7 +13,7 @@ var port = process.env.PORT || 3000;
 var url_counter = 0;
 db.findLastCode((err,data)=>{
     if(err)(console.log(err))
-    url_counter = data;
+    url_counter = ++data;
     console.log(url_counter);
 })
 /** this project needs a db !! **/ 
@@ -35,6 +35,8 @@ app.get('/', function(req, res){
 // your first API endpoint... 
 app.post("/api/shorturl/new", function (req, res,next) {
   var oriurl = req.body['url'];
+  //checkDNS
+  
   //find db
   db.findOneByOriURL(oriurl, (err,data)=>{
     if(err) {return next(err)}
@@ -44,6 +46,7 @@ app.post("/api/shorturl/new", function (req, res,next) {
       //save
       //first draft use counter
       var urlPair = db.urlConverter({oriURL:oriurl,shortURL:url_counter++});
+      console.log('UpdatedURL'+url_counter);
       db.createAndSaveURL(urlPair, (err,data)=>{
         if(err) {return next(err)}
         res.json({original_url: data['oriURL'],
