@@ -41,9 +41,8 @@ app.post("/api/shorturl/new", function (req, res) {
      return  res.json({error: 'invalid URL'});
   }
   //checkDNS
-  oriurl = oriurl.replace(/https:\/\//,"");
-  console.log(oriurl);
-  dns.lookup(oriurl,(err,data)=>{
+  var noHttpUrl = oriurl.replace(/https:\/\//,"");
+  dns.lookup(noHttpUrl,(err,data)=>{
     if(err) {console.log(err);
     return res.json({error: 'invalid URL'});}
     //find db
@@ -69,7 +68,15 @@ app.post("/api/shorturl/new", function (req, res) {
 });
 
 app.get("/api/shorturl/:shorturl", function(req, res){
-  
+  var shortUrl = req.params['shorturl'];
+  db.findOneByShortURL(shortUrl, (err,data)=>{
+    if(err) {return console.log(err);}
+    if(!data){
+      
+    }else{
+      res.redirect('data
+    }
+  })
 });
 
 
