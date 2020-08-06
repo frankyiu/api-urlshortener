@@ -72,7 +72,7 @@ app.get("/api/shorturl/:shorturl", function(req, res){
   db.findOneByShortURL(shortUrl, (err,data)=>{
     if(err) {return console.log(err);}
     if(!data){
-      
+      res.send('Not Found');
     }else{
       console.log('redirecting....');
       res.redirect(data['oriURL']);
