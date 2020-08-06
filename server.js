@@ -74,7 +74,8 @@ app.get("/api/shorturl/:shorturl", function(req, res){
     if(!data){
       
     }else{
-      res.redirect('data
+      console.log('redirecting....');
+      res.redirect(data['oriURL']);
     }
   })
 });
