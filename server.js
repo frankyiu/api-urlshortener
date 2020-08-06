@@ -36,7 +36,13 @@ app.get('/', function(req, res){
 // your first API endpoint... 
 app.post("/api/shorturl/new", function (req, res) {
   var oriurl = req.body['url'];
+  //checkURL
+  if(!/^https:\/\//.test(oriurl)){
+     return  res.json({error: 'invalid URL'});
+  }
   //checkDNS
+  oriurl = oriurl.replace(/https:\/\//,"");
+  console.log(oriurl);
   dns.lookup(oriurl,(err,data)=>{
     if(err) {console.log(err);
     return res.json({error: 'invalid URL'});}
